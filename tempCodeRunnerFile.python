@@ -1,10 +1,14 @@
-import cv2
-import  urllib.request as urllib
-import numpy as np
+from fastapi import FastAPI
 
-req = urllib.urlopen('http://192.168.1.3:81/stream')
-arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-img = cv2.imdecode(arr, -1) # 'Load it as it is'
+app = FastAPI()
 
-cv2.imshow('lalala', img)
-if cv2.waitKey() & 0xff == 27: quit()
+@app.get("/my-first-api")
+def hello(name = None):
+
+    if name is None:
+        text = 'Hello!'
+
+    else:
+        text = 'Hello ' + name + '!'
+
+    return text

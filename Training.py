@@ -28,8 +28,10 @@ classifier.add(Conv2D(32, (3, 3), input_shape = (128, 128, 3), activation = 'rel
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
 # Adding a second convolutional layer
+
 classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
+
 
 # Step 3 - Flattening
 classifier.add(Flatten())
@@ -49,9 +51,13 @@ test_datagen = ImageDataGenerator(rescale = 1./255)
 training_set = train_datagen.flow_from_directory('C:/Users/Madhuri/AppData/Local/Programs/Python/Python38/Tomato_Leaf_Disease_Prediction/Dataset/train', # relative path from working directoy
                                                  target_size = (128, 128),
                                                  batch_size = 6, class_mode = 'categorical')
+
+
 valid_set = test_datagen.flow_from_directory('C:/Users/Madhuri/AppData/Local/Programs/Python/Python38/Tomato_Leaf_Disease_Prediction/Dataset/val', # relative path from working directoy
                                              target_size = (128, 128), 
                                         batch_size = 3, class_mode = 'categorical')
+
+
 
 labels = (training_set.class_indices)
 print(labels)
@@ -64,13 +70,24 @@ classifier.fit_generator(training_set,
 
                          )
 
+
+
 classifier_json=classifier.to_json()
+
+
+
+
 with open("model1.json", "w") as json_file:
     json_file.write(classifier_json)
 # serialize weights to HDF5
     classifier.save_weights("my_model_weights.h5")
     classifier.save("model.h5")
     print("Saved model to disk")
+
+
+
+
+
 
 '''
 import cv2
@@ -83,6 +100,7 @@ img_resize = cv2.resize(img, (128,128))
 
 
 CV2 reads an image in BGR format. We need to convert it to RGB
+
 b,g,r = cv2.split(img_resize)       # get b,g,r
 rgb_img = cv2.merge([r,g,b])     # switch it to rgb
 
@@ -101,3 +119,5 @@ cv2.imshow(h,img)
 
 print(h)
 '''
+
+
