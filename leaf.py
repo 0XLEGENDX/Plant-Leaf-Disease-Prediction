@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 
-filepath = 'C:/Users/Madhuri/AppData/Local/Programs/Python/Python38/Tomato_Leaf_Disease_Prediction/model.h5'
+filepath = 'model.h5'
 model = load_model(filepath)
 print(model)
 
