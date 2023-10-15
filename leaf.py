@@ -8,53 +8,30 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 
-filepath = 'model.h5'
+filepath = r'C:\Programming\Python\Plant Disease Prediction\Plant-Leaf-Disease-Prediction\models\cnn_model.h5'
 model = load_model(filepath)
 print(model)
 
 print("Model Loaded Successfully")
 
 def pred_tomato_dieas(tomato_plant):
-  test_image = load_img(tomato_plant, target_size = (128, 128)) # load image 
+  test_image = load_img(tomato_plant, target_size = (224, 224)) # load image 
   print("@@ Got Image for prediction")
   
   test_image = img_to_array(test_image)/255 # convert image to np array and normalize
   test_image = np.expand_dims(test_image, axis = 0) # change dimention 3D to 4D
   
-  result = model.predict(test_image) # predict diseased palnt or not
+  result = model.predict(test_image) # predict diseased plant or not
   print('@@ Raw result = ', result)
   
   pred = np.argmax(result, axis=1)
-  print(pred)
-  if pred==0:
-      return "Tomato - Bacteria Spot Disease", 'Tomato-Bacteria Spot.html'
-       
-  elif pred==1:
-      return "Tomato - Early Blight Disease", 'Tomato-Early_Blight.html'
-        
-  elif pred==2:
-      return "Tomato - Healthy and Fresh", 'Tomato-Healthy.html'
-        
-  elif pred==3:
-      return "Tomato - Late Blight Disease", 'Tomato - Late_blight.html'
-       
-  elif pred==4:
-      return "Tomato - Leaf Mold Disease", 'Tomato - Leaf_Mold.html'
-        
-  elif pred==5:
-      return "Tomato - Septoria Leaf Spot Disease", 'Tomato - Septoria_leaf_spot.html'
-        
-  elif pred==6:
-      return "Tomato - Target Spot Disease", 'Tomato - Target_Spot.html'
-        
-  elif pred==7:
-      return "Tomato - Tomoato Yellow Leaf Curl Virus Disease", 'Tomato - Tomato_Yellow_Leaf_Curl_Virus.html'
-  elif pred==8:
-      return "Tomato - Tomato Mosaic Virus Disease", 'Tomato - Tomato_mosaic_virus.html'
-        
-  elif pred==9:
-      return "Tomato - Two Spotted Spider Mite Disease", 'Tomato - Two-spotted_spider_mite.html'
+  
+  
+  classes = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy', 'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy', 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_', 'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy', 'Grape___Black_rot', 'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)', 'Grape___healthy', 'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot', 'Peach___healthy', 'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy', 'Raspberry___healthy', 'Soybean___healthy', 'Squash___Powdery_mildew', 'Strawberry___Leaf_scorch', 'Strawberry___healthy', 'Tomato___Bacterial_spot', 'Tomato___Early_blight', 'Tomato___Late_blight', 'Tomato___Leaf_Mold', 'Tomato___Septoria_leaf_spot', 'Tomato___Spider_mites Two-spotted_spider_mite', 'Tomato___Target_Spot', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus', 'Tomato___healthy'] 
 
+  print(pred)
+  
+  return classes[pred[0]] , "showcase.html"
     
 
 # Create flask instance
@@ -74,12 +51,13 @@ def predict():
         filename = file.filename        
         print("@@ Input posted = ", filename)
         
-        file_path = os.path.join('C:/Users/Madhuri/AppData/Local/Programs/Python/Python38/Tomato_Leaf_Disease_Prediction/static/upload/', filename)
+        
+        file_path = os.path.join(r'C:\Programming\Python\Plant Disease Prediction\Plant-Leaf-Disease-Prediction\static\images', "uploaded.jpg")
         file.save(file_path)
 
         print("@@ Predicting class......")
         pred, output_page = pred_tomato_dieas(tomato_plant=file_path)
-              
+        print("DOne")
         return render_template(output_page, pred_output = pred, user_image = file_path)
     
 # For local system & cloud
